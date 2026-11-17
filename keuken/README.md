@@ -1,16 +1,45 @@
-# React + Vite
+# Keuken
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The project contains a Vite/React kitchen scene and a PHP recipe book. The
+recipe book stores recipes in SQLite under `data/recipes.sqlite`; the PHP
+server must have PDO SQLite enabled.
 
-Currently, two official plugins are available:
+## Local development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```sh
+npm install
+npm run dev
+```
 
-## React Compiler
+The dev command starts PHP on `127.0.0.1:8000` and Vite, which proxies the PHP
+pages. Open the Vite URL printed in the terminal. If PHP is not on your `PATH`,
+set `PHP_BINARY` to the PHP executable before running `npm run dev`.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Apache deployment
 
-## Expanding the ESLint configuration
+The app requires a web host that runs PHP and has both `PDO` and `pdo_sqlite`
+enabled; static-only hosting is not sufficient. To create a complete
+deployment directory, run:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```sh
+npm install
+npm run build
+```
+
+Upload the **contents** of `dist/` to the domain's Apache document root,
+including `index.html`, `assets/`, `src/`, and `data/`. The build includes the
+PHP pages and an Apache rule that denies web access to the SQLite data
+directory. Use a host that honors `.htaccess` in `data/` (Apache 2.4 with
+`AllowOverride AuthConfig`); do not use this layout on Nginx, which ignores
+`.htaccess`.
+
+Enable PHP for `.php` files and PDO SQLite on the host. PHP must be able to
+write to `data/` so it can create and update `recipes.sqlite`; grant write
+access to the PHP process without making the directory publicly accessible.
+The app initializes the database and sample recipes on first request.
+
+User registration is open by default. To provision the reserved administrator
+account, set the server environment variable `ADMIN_PASSWORD` to a unique
+password of at least 12 characters before the first request. The admin
+username is `alexcaspercrud`. Keep this secret out of the web root and source
+control, and use HTTPS in production.

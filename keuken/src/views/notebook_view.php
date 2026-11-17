@@ -11,6 +11,7 @@ $documentTitle = 'Mijn notitieboek';
 </head>
 <body class="notebook-page">
 <main class="notebook" aria-labelledby="notebook-title">
+  <a class="notebook-back" href="/">Terug naar keuken</a>
   <header class="notebook-header">
     <p class="notebook-label">Persoonlijke notities</p>
     <h1 id="notebook-title">Mijn notitieboek</h1>

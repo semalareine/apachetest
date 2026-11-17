@@ -7,9 +7,7 @@ body.notebook-page {
   margin: 0;
   padding: 32px 18px;
   color: #293747;
-  background:
-    radial-gradient(ellipse at 50% 20%, rgba(86, 109, 94, .35), transparent 55%),
-    #26342e;
+  background: url("assets/notebook-background.png") center / cover fixed, #63728d;
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -31,6 +29,17 @@ body.notebook-page {
     0 26px 52px rgba(0, 0, 0, .38);
   animation: notebook-open 1.25s cubic-bezier(.2, .75, .25, 1) both;
 }
+
+.notebook-back {
+  position: absolute;
+  top: 22px;
+  right: 28px;
+  color: #52666a;
+  font-size: 13px;
+  text-underline-offset: 3px;
+}
+
+.notebook-back:focus-visible { outline: 2px solid #52666a; outline-offset: 3px; }
 
 .notebook::before {
   position: absolute;

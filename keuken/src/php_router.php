@@ -9,7 +9,7 @@ if ($normalizedPath === '/data' || strpos($normalizedPath, '/data/') === 0) {
     exit;
 }
 
-if (preg_match('#^/src/(recipes|recipe|add_recipe|login|register|logout|session|profile|recipe_delete)\.php$#', $path)
+if (preg_match('#^/src/(recipes|recipe|add_recipe|login|register|logout|session|profile|recipe_delete|reviewboard)\.php$#', $path)
     && !extension_loaded('pdo_sqlite')) {
     http_response_code(500);
     header('Content-Type: text/plain; charset=UTF-8');

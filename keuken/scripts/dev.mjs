@@ -1,57 +1,57 @@
-import { spawn } from 'node:child_process'
-import { fileURLToPath } from 'node:url'
+import { spawn } from 'node:child_process';
+import { existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 
-const projectRoot = fileURLToPath(new URL('../', import.meta.url))
-let php
-let vite
-let shuttingDown = false
+const projectRoot = fileURLToPath(new URL('../', import.meta.url));
+const xamppPhp = 'C:\\xampp\\php\\php.exe';
+const phpExecutable = process.env.PHP_BINARY
+  || (process.platform === 'win32' && existsSync(xamppPhp) ? xamppPhp : 'php');
+const children = [];
+let shuttingDown = false;
 
 function stop(exitCode = 0) {
-  if (shuttingDown) return
-  shuttingDown = true
-  process.exitCode = exitCode
-  php?.kill()
-  vite?.kill()
+  if (shuttingDown) return;
+  shuttingDown = true;
+  for (const child of children) {
+    if (child.exitCode === null) child.kill();
+  }
+  process.exitCode = exitCode;
 }
 
-if (!process.env.PHP_BACKEND_URL) {
-  php = spawn(process.env.PHP_BINARY || 'php', [
-    '-S',
-    '127.0.0.1:8000',
-    '-t',
-    '.',
-    'src/php_router.php',
-  ], { cwd: projectRoot, stdio: 'inherit' })
+function start(command, args, label) {
+  const child = spawn(command, args, { cwd: projectRoot, stdio: 'inherit' });
+  children.push(child);
 
-  php.on('error', (error) => {
-    console.error(
-      `Could not start PHP: ${error.message}. Install PHP with PDO SQLite, or set PHP_BACKEND_URL to an existing PHP server.`,
-    )
-    stop(1)
-  })
-
-  php.on('exit', (code) => {
-    if (!shuttingDown) {
-      console.error(`The PHP server stopped${code ? ` with exit code ${code}` : ''}.`)
-      stop(code || 1)
+  child.on('error', (error) => {
+    console.error(`${label} could not start: ${error.message}`);
+    if (label === 'PHP' && error.code === 'ENOENT') {
+      console.error('Install PHP or set PHP_BINARY to the PHP executable.');
     }
-  })
+    stop(1);
+  });
+
+  child.on('exit', (code) => {
+    if (!shuttingDown) {
+      if (code !== 0) console.error(`${label} exited with code ${code}.`);
+      stop(code || 0);
+    }
+  });
+
+  return child;
 }
 
-vite = spawn(process.execPath, [
-  'node_modules/vite/bin/vite.js',
-  ...process.argv.slice(2),
-], { cwd: projectRoot, stdio: 'inherit' })
+process.on('SIGINT', () => stop(0));
+process.on('SIGTERM', () => stop(0));
 
-vite.on('error', (error) => {
-  console.error(`Could not start Vite: ${error.message}`)
-  stop(1)
-})
+start(phpExecutable, [
+  '-S',
+  '127.0.0.1:8000',
+  '-t',
+  projectRoot,
+  path.join('src', 'php_router.php'),
+], 'PHP');
 
-vite.on('exit', (code) => {
-  if (!shuttingDown) stop(code || 0)
-})
-
-for (const signal of ['SIGINT', 'SIGTERM']) {
-  process.on(signal, () => stop())
-}
+start(process.execPath, [
+  path.join('node_modules', 'vite', 'bin', 'vite.js'),
+], 'Vite');

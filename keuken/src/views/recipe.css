@@ -163,20 +163,6 @@ body::before {
 
 .home-link:focus-visible { outline: 2px dotted var(--accent); outline-offset: 3px; }
 
-.logout-form { margin-top: 8px; }
-.logout-form button {
-  padding: 0;
-  border: 0;
-  color: var(--ink-soft);
-  background: none;
-  font: italic 15px var(--serif);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  cursor: pointer;
-}
-
-.logout-form button:focus-visible { outline: 2px dotted var(--accent); outline-offset: 3px; }
-
 .contents h2 {
   margin: 0 0 6px;
   padding-bottom: 8px;

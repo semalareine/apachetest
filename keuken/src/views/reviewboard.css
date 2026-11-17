@@ -1,0 +1,250 @@
+* { box-sizing: border-box; }
+
+body.reviewboard-page {
+  min-height: 100vh;
+  margin: 0;
+  padding: 38px 20px 56px;
+  color: #382719;
+  background:
+    linear-gradient(rgba(18, 14, 11, .18), rgba(18, 14, 11, .28)),
+    url("assets/reviewboard-background.png") center / cover fixed,
+    #211a14;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.pinboard {
+  position: relative;
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: clamp(24px, 5vw, 56px);
+  border: 16px solid #704323;
+  border-radius: 7px;
+  background:
+    radial-gradient(ellipse at 18% 22%, rgba(233, 191, 131, .12), transparent 30%),
+    radial-gradient(ellipse at 78% 69%, rgba(52, 27, 16, .18), transparent 36%),
+    repeating-linear-gradient(8deg, transparent 0 11px, rgba(91, 56, 32, .045) 12px 13px),
+    #a77b51;
+  box-shadow:
+    inset 0 0 0 3px #a36a3d,
+    inset 0 0 30px rgba(48, 25, 12, .38),
+    0 5px 0 #3f291b,
+    0 22px 50px rgba(0, 0, 0, .55);
+}
+
+.pinboard-header {
+  position: relative;
+  margin: 0 0 32px;
+  padding: 0 0 22px;
+  border-bottom: 1px solid rgba(75, 43, 23, .42);
+  text-align: center;
+}
+
+.kitchen-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #492d1c;
+  font-size: 15px;
+  text-underline-offset: 4px;
+}
+
+.kitchen-link:focus-visible,
+.review-form button:focus-visible { outline: 2px solid #5b2c1b; outline-offset: 4px; }
+
+.board-kicker {
+  margin: 0 0 4px;
+  color: #68432c;
+  font-size: 13px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.pinboard-header h1 {
+  margin: 0;
+  color: #452a1c;
+  font-size: clamp(32px, 6vw, 52px);
+  font-weight: 400;
+}
+
+.pinboard-header > p:last-child {
+  margin: 8px 0 0;
+  color: #563a27;
+  font-size: 17px;
+  font-style: italic;
+}
+
+.pinboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  align-items: start;
+  gap: 30px;
+}
+
+.recipe-pin {
+  --paper: #f1e7d2;
+  --paper-border: #d6c6a9;
+  --paper-line: #c9b99a;
+  --paper-text: #432b1d;
+  --paper-muted: #5e4b38;
+  position: relative;
+  min-width: 0;
+  padding: 28px 22px 22px;
+  border: 3px solid var(--paper-border);
+  background: var(--paper);
+  color: var(--paper-text);
+  font-family: "Trebuchet MS", "Arial Rounded MT Bold", sans-serif;
+  box-shadow: 2px 6px 12px rgba(54, 31, 16, .28);
+  transform: rotate(-.35deg);
+}
+
+.recipe-pin--red {
+  --paper: #a9433b;
+  --paper-border: #85342e;
+  --paper-line: rgba(57, 25, 22, .42);
+  --paper-text: #2e1715;
+  --paper-muted: #40201c;
+}
+
+.recipe-pin--blue {
+  --paper: #547a98;
+  --paper-border: #3d5d78;
+  --paper-line: rgba(24, 42, 57, .42);
+  --paper-text: #172b3a;
+  --paper-muted: #20394c;
+}
+
+.recipe-pin--green {
+  --paper: #58805b;
+  --paper-border: #406344;
+  --paper-line: rgba(25, 44, 27, .42);
+  --paper-text: #1b3020;
+  --paper-muted: #29432d;
+}
+
+.recipe-pin:nth-child(even) { transform: rotate(.45deg); }
+.recipe-pin:nth-child(3n) { transform: rotate(.15deg); }
+
+.pin {
+  position: absolute;
+  top: 9px;
+  left: 50%;
+  width: 15px;
+  height: 15px;
+  border: 1px solid #8b241a;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f5a18a 0 10%, #bb3526 45%, #6e1d17 100%);
+  box-shadow: 1px 2px 3px rgba(0, 0, 0, .38);
+  transform: translateX(-50%);
+}
+
+.recipe-pin-header { padding-bottom: 9px; border-bottom: 1px dashed var(--paper-line); }
+.recipe-category {
+  margin: 0 0 3px;
+  color: var(--paper-muted);
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.recipe-pin h2 { margin: 0; color: var(--paper-text); font-size: 25px; font-weight: 400; }
+.pin-author { margin: 5px 0 0; color: var(--paper-muted); font-size: 14px; font-style: italic; }
+.pin-description { margin: 12px 0; color: var(--paper-muted); font-size: 15px; line-height: 1.45; }
+
+.rating-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 9px;
+  margin: 0 0 17px;
+  color: var(--paper-muted);
+  font-size: 13px;
+}
+
+.rating-stars { color: #a56a13; letter-spacing: .08em; white-space: nowrap; }
+.star-picker {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: 5px;
+  margin: 0 0 12px;
+  padding: 0;
+  border: 0;
+}
+
+.star-picker legend {
+  order: -1;
+  flex: 0 0 100%;
+  margin-bottom: 5px;
+  color: var(--paper-text);
+  font-size: 14px;
+}
+.star-choice { position: relative; color: #b7a58a; cursor: pointer; font-size: 27px; line-height: 1; }
+.star-choice input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.star-choice:has(input:checked),
+.star-choice:has(input:checked) ~ .star-choice,
+.star-choice:hover,
+.star-choice:hover ~ .star-choice { color: #d29a22; }
+.star-choice:has(input:focus-visible) { outline: 2px solid #8a4b20; outline-offset: 2px; }
+
+.comment-label { display: block; margin: 0 0 5px; color: var(--paper-text); font-size: 14px; }
+.review-form textarea {
+  display: block;
+  width: 100%;
+  min-height: 76px;
+  padding: 9px 10px;
+  border: 1px solid #c5b394;
+  border-radius: 2px;
+  color: #382719;
+  background: rgba(255, 253, 245, .78);
+  font: 15px/1.4 Georgia, "Times New Roman", serif;
+  resize: vertical;
+}
+
+.review-form textarea:focus-visible { outline: 2px solid #8a4b20; outline-offset: 2px; }
+.review-form-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; }
+.edit-hint { color: var(--paper-muted); font-size: 12px; font-style: italic; }
+.own-recipe-note { margin: 14px 0; color: var(--paper-muted); font-size: 14px; font-style: italic; }
+.review-form button {
+  padding: 8px 12px;
+  border: 1px solid #69401f;
+  border-radius: 2px;
+  color: #fff4df;
+  background: linear-gradient(#87512c, #603719);
+  font: 15px Georgia, "Times New Roman", serif;
+  cursor: pointer;
+}
+
+.review-form button:hover { background: #593319; }
+.form-error, .board-error { color: #8d241d; font-size: 14px; font-weight: 600; }
+.board-error { padding: 10px 14px; background: rgba(255, 247, 225, .8); }
+.board-notice { padding: 10px 14px; border-left: 3px solid #51723e; color: #334d28; background: rgba(246, 245, 220, .85); }
+.board-empty { padding: 18px; color: #4c3422; background: rgba(255, 247, 225, .75); text-align: center; }
+
+.pinned-reviews { margin-top: 22px; padding-top: 12px; border-top: 1px dashed var(--paper-line); }
+.pinned-reviews h3 { margin: 0 0 7px; color: var(--paper-text); font-size: 17px; font-weight: 400; }
+.pinned-reviews ul { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.pinned-reviews li { padding: 9px 10px; background: rgba(255, 255, 255, .35); }
+.review-meta { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 5px 12px; margin: 0; font-size: 13px; }
+.review-meta strong { color: var(--paper-text); }
+.review-meta .rating-stars { font-size: 12px; }
+.review-comment { margin: 5px 0 0; color: var(--paper-muted); font-size: 14px; line-height: 1.4; overflow-wrap: anywhere; }
+.no-reviews { margin: 0; color: var(--paper-muted); font-size: 14px; font-style: italic; }
+
+@media (max-width: 560px) {
+  body.reviewboard-page { padding: 15px 10px 28px; }
+  .pinboard { padding: 58px 15px 20px; border-width: 10px; }
+  .pinboard-header { margin-bottom: 20px; }
+  .kitchen-link { top: -40px; }
+  .pinboard-grid { gap: 20px; }
+  .recipe-pin { padding-right: 16px; padding-left: 16px; }
+}

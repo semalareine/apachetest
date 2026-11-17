@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node scripts/dev.mjs",
-    "build": "vite build",
+    "build": "vite build && node scripts/prepare-deploy.mjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },

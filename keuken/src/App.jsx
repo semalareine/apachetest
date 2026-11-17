@@ -17,12 +17,15 @@ const BOOK_POSITION = [-11.752, 4.82, 4.749];
 const BOOK_CAMERA_POSITION = [-10.7, 11.41, 4.749];
 const NOTEBOOK_POSITION = [-15.313, 6.04, -18.104];
 const NOTEBOOK_CAMERA_POSITION = [-14.7, 8.5, -17.2];
+const REVIEW_BOARD_POSITION = [-22.032, 10.251, 16.578];
+const REVIEW_BOARD_CAMERA_POSITION = [-22.032, 11.5, 3];
 // peep 100 - 130 ivm 4de muur POTENTIALLY THO
 const CAMERA_TURN_RANGE = (100 * Math.PI) / 180;
 const CAMERA_TILT_RANGE = 0.25;
 const CAMERA_SMOOTHING = 6;
 const BOOK_FOCUS_DURATION = 1.2;
 const NOTEBOOK_FOCUS_DURATION = 1.4;
+const REVIEW_BOARD_FOCUS_DURATION = 1.4;
 
 function CursorCamera({ pointer, focus, onFocusComplete }) {
   const { camera } = useThree();
@@ -38,14 +41,22 @@ function CursorCamera({ pointer, focus, onFocusComplete }) {
   useFrame((_, delta) => {
     if (focus.current) {
       if (!cameraFocus.current) {
-        const isNotebook = focus.current === 'notebook';
+        const focusTarget = focus.current === 'notebook'
+          ? { duration: NOTEBOOK_FOCUS_DURATION, position: NOTEBOOK_CAMERA_POSITION, target: NOTEBOOK_POSITION }
+          : focus.current === 'reviewboard'
+            ? {
+              duration: REVIEW_BOARD_FOCUS_DURATION,
+              position: REVIEW_BOARD_CAMERA_POSITION,
+              target: REVIEW_BOARD_POSITION,
+            }
+            : { duration: BOOK_FOCUS_DURATION, position: BOOK_CAMERA_POSITION, target: BOOK_POSITION };
         cameraFocus.current = {
           elapsed: 0,
-          duration: isNotebook ? NOTEBOOK_FOCUS_DURATION : BOOK_FOCUS_DURATION,
+          duration: focusTarget.duration,
           fromPosition: camera.position.clone(),
-          toPosition: new Vector3(...(isNotebook ? NOTEBOOK_CAMERA_POSITION : BOOK_CAMERA_POSITION)),
+          toPosition: new Vector3(...focusTarget.position),
           fromTarget: initialTarget.current.clone(),
-          toTarget: new Vector3(...(isNotebook ? NOTEBOOK_POSITION : BOOK_POSITION)),
+          toTarget: new Vector3(...focusTarget.target),
         };
       }
       const currentFocus = cameraFocus.current;
@@ -118,9 +129,18 @@ function KitchenScene() {
     focus.current = 'notebook';
   }
 
+  function focusReviewBoard() {
+    focus.current = 'reviewboard';
+  }
+
   function navigateToRecipes() {
     navigationTimer.current = window.setTimeout(() => {
-      window.location.assign(focus.current === 'notebook' ? '/src/profile.php' : '/src/recipes.php');
+      const destination = focus.current === 'notebook'
+        ? '/src/profile.php'
+        : focus.current === 'reviewboard'
+          ? '/src/reviewboard.php'
+          : '/src/recipes.php';
+      window.location.assign(destination);
     }, 800);
   }
 
@@ -168,6 +188,7 @@ function KitchenScene() {
           <Model
             onBookClick={focusBook}
             onNotepadClick={focusNotebook}
+            onReviewBoardClick={focusReviewBoard}
           />
         </Bounds>
 

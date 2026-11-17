@@ -24,10 +24,6 @@ $currentUser = isset($currentUser) ? $currentUser : currentUser($db);
         <h1 class="title"><a class="title-link" href="recipes.php"><?= e($bookTitle) ?></a></h1>
         <p class="note"><?= e($bookNote) ?></p>
         <a class="home-link" href="/">Terug naar de keuken</a>
-        <form class="logout-form" method="post" action="logout.php">
-          <input type="hidden" name="csrf_token" value="<?= e(csrfToken()) ?>">
-          <button type="submit">Uitloggen</button>
-        </form>
       </header>
 
       <nav class="contents" aria-label="Receptcategorieën">
