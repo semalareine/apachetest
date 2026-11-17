@@ -1,0 +1,41 @@
+body {
+  margin: 0;
+}
+
+.access-message {
+  display: grid;
+  min-height: 100vh;
+  place-content: center;
+  gap: 14px;
+  padding: 24px;
+  color: #ecdfc3;
+  background: #0c1020;
+  font: 18px Georgia, serif;
+  text-align: center;
+}
+
+.access-message button {
+  justify-self: center;
+  padding: 8px 14px;
+  border: 1px solid #ecdfc3;
+  color: #ecdfc3;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
+.scene-fallback {
+  display: grid;
+  min-height: 100vh;
+  place-content: center;
+  gap: 12px;
+  padding: 24px;
+  color: #ecdfc3;
+  background: #0c1020;
+  font: 18px Georgia, serif;
+  text-align: center;
+}
+
+.scene-fallback h1,
+.scene-fallback p { margin: 0; }
+.scene-fallback a { color: #ecdfc3; }
